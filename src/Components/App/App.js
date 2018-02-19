@@ -6,7 +6,6 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img className="App-logo" alt="logo" />
           <h1 className="App-title">Fortnight Planner</h1>
         </header>
         <p className="App-intro">
