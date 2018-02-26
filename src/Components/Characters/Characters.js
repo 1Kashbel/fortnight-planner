@@ -3,18 +3,39 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import './Characters.css';
 import 'react-select/dist/react-select.css';
+
 class Characters extends React.Component {
-  componentDidMount() {}
+  componentWillMount() {
+    let currentCharacters =
+      JSON.parse(localStorage.getItem('currentCharacters')) || [];
+    this.setState({ currentCharacters });
+  }
+
+  addCharacter(val) {
+    let currentCharacters = this.state.currentCharacters;
+    currentCharacters.push(val.value);
+    this.setState(currentCharacters);
+    localStorage.setItem(
+      'currentCharacters',
+      JSON.stringify(currentCharacters)
+    );
+  }
+
   render() {
+    console.log(this.state.currentCharacters);
     return (
       <div className={this.props.class + ' characters'}>
         <Select
           name="Characters"
-          on
+          placeholder={'Find a character'}
+          openOnClick={false}
+          className={'characters-select'}
+          autosize={false}
+          onChange={this.addCharacter.bind(this)}
           optionRenderer={el => (
             <span>
               <img
-                style={{ width: 30, height: 30 }}
+                style={{ width: 30, height: 30, float: 'left' }}
                 src={`https://onepiece-treasurecruise.com/wp-content/uploads/f${
                   el.value
                 }.png`}
@@ -31,28 +52,21 @@ class Characters extends React.Component {
               className: char.type,
             })
           )}
-          onChange={val => console.log(val.value)}
         />
-        {/*{this.props.characters.map(char => (
-            <option
-              value={char.value}
-              key={char.value}
-              style={{
-                display: 'inline-block',
-                backgroundSize: '30px 30px',
-                width: '30px; height: 30px',
-                backgroundImage: `url('https://onepiece-treasurecruise.com/wp-content/uploads/f${char.value
-                  .toString()
-                  .padStart(4, '0')}.png')`,
-              }}
-            >
-              {char.name}
-            </option>
-          ))}*/}
+        <div className={'characterList'}>
+          {this.state.currentCharacters.map(e => (
+            <p>
+              <span key={e} className={'character'}>
+                {e}
+              </span>
+            </p>
+          ))}
+        </div>
       </div>
     );
   }
 }
+
 Characters.propTypes = {
   characters: PropTypes.array,
 };

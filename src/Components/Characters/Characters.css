@@ -1,3 +1,4 @@
+
 .STR {
     color: #ff5e52
 }
@@ -16,4 +17,10 @@
 
 .INT {
     color: #d22de1
+}
+
+.Select-menu {
+    max-height: 300px !important;
+    height: 300px !important;
+    overflow: auto !important;
 }
