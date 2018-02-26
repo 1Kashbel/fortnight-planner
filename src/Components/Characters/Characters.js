@@ -8,7 +8,7 @@ class Characters extends React.Component {
   render() {
     return (
       <div className={this.props.class + ' characters'}>
-        {/* {characters.map(char => <p key={char.value}>{char.name}</p>)} */}
+        {characters.map(char => <p key={char.value}>{char.name}</p>)}
       </div>
     );
   }
