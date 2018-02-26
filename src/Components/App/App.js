@@ -4,11 +4,21 @@ import Info from '../Info/Info';
 import Characters from '../Characters/Characters';
 import './App.css';
 
+const fortnights = require('../../Data/fortnights');
+const characters = require('../../Data/characters');
+
 class App extends Component {
   componentWillMount() {
+    let usableCharacters = characters.filter(char =>
+      fortnights.some(
+        f => f.drops.indexOf(char.value.toString().padStart(4, '0')) > -1
+      )
+    );
+
     this.setState({
       region: localStorage.getItem('region') || 'Global',
       hidden: localStorage.getItem('hidden'),
+      characters: usableCharacters,
     });
   }
 
@@ -36,7 +46,10 @@ class App extends Component {
         />
         <div className="tools-block">Tools Block</div>
         <div className="fortnights-block">Fortnights Block</div>
-        <Characters class="characters-block" />
+        <Characters
+          class="characters-block"
+          characters={this.state.characters}
+        />
         <Footer class="footer-block" />
       </div>
     );

@@ -5,11 +5,11 @@
   "dependencies": {
     "fs": "^0.0.1-security",
     "node-fetch": "^2.0.0",
-    "osmosis": "^1.1.6",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "react-select": "^1.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
