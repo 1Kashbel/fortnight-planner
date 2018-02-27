@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import './Characters.css';
 import 'react-select/dist/react-select.css';
+import CharacterEntry from '../CharacterEntry/CharacterEntry';
 
 class Characters extends React.Component {
   componentWillMount() {
@@ -15,14 +16,31 @@ class Characters extends React.Component {
     let currentCharacters = this.state.currentCharacters;
     currentCharacters.push(val.value);
     this.setState(currentCharacters);
-    localStorage.setItem(
-      'currentCharacters',
-      JSON.stringify(currentCharacters)
-    );
   }
 
+  removeCharacter(val) {
+    let currentCharacters = this.state.currentCharacters;
+    this.setState({
+      currentCharacters: currentCharacters.filter(c => c !== val),
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    this.saveCharactersToStorage();
+  }
+  saveCharactersToStorage() {
+    localStorage.setItem(
+      'currentCharacters',
+      JSON.stringify(this.state.currentCharacters)
+    );
+  }
   render() {
-    console.log(this.state.currentCharacters);
+    let characters = this.props.characters.filter(
+      char =>
+        this.state.currentCharacters.indexOf(
+          char.value.toString().padStart(4, '0')
+        ) === -1
+    );
     return (
       <div className={this.props.class + ' characters'}>
         <Select
@@ -35,6 +53,7 @@ class Characters extends React.Component {
           optionRenderer={el => (
             <span>
               <img
+                alt={el.value}
                 style={{ width: 30, height: 30, float: 'left' }}
                 src={`https://onepiece-treasurecruise.com/wp-content/uploads/f${
                   el.value
@@ -45,21 +64,28 @@ class Characters extends React.Component {
               </option>
             </span>
           )}
-          options={this.props.characters.map(char =>
-            Object.create({
-              value: char.value.toString().padStart(4, '0'),
-              label: char.name,
-              className: char.type,
-            })
-          )}
+          options={characters
+            .filter(c =>
+              this.state.currentCharacters.indexOf(
+                c.value.toString().padStart(4, '0') < 0
+              )
+            )
+            .map(char =>
+              Object.create({
+                value: char.value.toString().padStart(4, '0'),
+                label: char.name,
+                className: char.type,
+              })
+            )}
         />
         <div className={'characterList'}>
           {this.state.currentCharacters.map(e => (
-            <p>
-              <span key={e} className={'character'}>
-                {e}
-              </span>
-            </p>
+            <CharacterEntry
+              key={e}
+              character={e}
+              characters={this.props.characters}
+              onRemoveButtonPress={this.removeCharacter.bind(this)}
+            />
           ))}
         </div>
       </div>
