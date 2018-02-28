@@ -13,21 +13,24 @@ class Characters extends React.Component {
   }
 
   addCharacter(val) {
-    let currentCharacters = this.state.currentCharacters;
+    let currentCharacters = this.state.currentCharacters.slice();
     currentCharacters.push(val.value);
-    this.setState(currentCharacters);
+    this.setState({ currentCharacters });
   }
 
   removeCharacter(val) {
-    let currentCharacters = this.state.currentCharacters;
-    this.setState({
-      currentCharacters: currentCharacters.filter(c => c !== val),
-    });
+    let currentCharacters = this.state.currentCharacters.filter(c => c !== val);
+    this.setState({ currentCharacters });
   }
 
   componentDidUpdate(prevProps, prevState, prevContext) {
-    this.saveCharactersToStorage();
+    if (
+      prevState.currentCharacters.length !== this.state.currentCharacters.length
+    ) {
+      this.saveCharactersToStorage();
+    }
   }
+
   saveCharactersToStorage() {
     localStorage.setItem(
       'currentCharacters',
@@ -64,19 +67,13 @@ class Characters extends React.Component {
               </option>
             </span>
           )}
-          options={characters
-            .filter(c =>
-              this.state.currentCharacters.indexOf(
-                c.value.toString().padStart(4, '0') < 0
-              )
-            )
-            .map(char =>
-              Object.create({
-                value: char.value.toString().padStart(4, '0'),
-                label: char.name,
-                className: char.type,
-              })
-            )}
+          options={characters.map(char =>
+            Object.create({
+              value: char.value.toString().padStart(4, '0'),
+              label: char.name,
+              className: char.type,
+            })
+          )}
         />
         <div className={'characterList'}>
           {this.state.currentCharacters.map(e => (

@@ -16,11 +16,14 @@ class Info extends React.Component {
         </p>
         <p>
           <input
+            id="hide-fortnights"
             type="checkbox"
             defaultChecked={hidden}
             onChange={this.props.onCheckboxChange}
           />
-          <label>Only show available fortnights</label>
+          <label htmlFor="hide-fortnights">
+            Only show available fortnights
+          </label>
         </p>
       </div>
     );
