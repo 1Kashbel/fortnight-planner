@@ -6,13 +6,17 @@ import 'react-select/dist/react-select.css';
 import CharacterEntry from '../CharacterEntry/CharacterEntry';
 
 class Characters extends React.Component {
-  render() {
+  componentWillMount() {
     let characters = this.props.characters.filter(
       char =>
         this.props.currentCharacters.indexOf(
           char.value.toString().padStart(4, '0')
         ) === -1
     );
+
+    this.setState({ characters });
+  }
+  render() {
     return (
       <div className={this.props.class + ' characters'}>
         <Select
@@ -36,7 +40,7 @@ class Characters extends React.Component {
               </option>
             </span>
           )}
-          options={characters.map(char =>
+          options={this.state.characters.map(char =>
             Object.create({
               value: char.value.toString().padStart(4, '0'),
               label: char.name,
