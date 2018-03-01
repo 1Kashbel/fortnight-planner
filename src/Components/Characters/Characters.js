@@ -6,41 +6,10 @@ import 'react-select/dist/react-select.css';
 import CharacterEntry from '../CharacterEntry/CharacterEntry';
 
 class Characters extends React.Component {
-  componentWillMount() {
-    let currentCharacters =
-      JSON.parse(localStorage.getItem('currentCharacters')) || [];
-    this.setState({ currentCharacters });
-  }
-
-  addCharacter(val) {
-    let currentCharacters = this.state.currentCharacters.slice();
-    currentCharacters.push(val.value);
-    this.setState({ currentCharacters });
-  }
-
-  removeCharacter(val) {
-    let currentCharacters = this.state.currentCharacters.filter(c => c !== val);
-    this.setState({ currentCharacters });
-  }
-
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    if (
-      prevState.currentCharacters.length !== this.state.currentCharacters.length
-    ) {
-      this.saveCharactersToStorage();
-    }
-  }
-
-  saveCharactersToStorage() {
-    localStorage.setItem(
-      'currentCharacters',
-      JSON.stringify(this.state.currentCharacters)
-    );
-  }
   render() {
     let characters = this.props.characters.filter(
       char =>
-        this.state.currentCharacters.indexOf(
+        this.props.currentCharacters.indexOf(
           char.value.toString().padStart(4, '0')
         ) === -1
     );
@@ -52,7 +21,7 @@ class Characters extends React.Component {
           openOnClick={false}
           className={'characters-select'}
           autosize={false}
-          onChange={this.addCharacter.bind(this)}
+          onChange={this.props.onAddCharacter}
           optionRenderer={el => (
             <span>
               <img
@@ -76,12 +45,12 @@ class Characters extends React.Component {
           )}
         />
         <div className={'characterList'}>
-          {this.state.currentCharacters.map(e => (
+          {this.props.currentCharacters.map(e => (
             <CharacterEntry
               key={e}
               character={e}
               characters={this.props.characters}
-              onRemoveButtonPress={this.removeCharacter.bind(this)}
+              onRemoveButtonPress={this.props.onRemoveCharacter}
             />
           ))}
         </div>
@@ -92,5 +61,7 @@ class Characters extends React.Component {
 
 Characters.propTypes = {
   characters: PropTypes.array,
+  onRemoveCharacter: PropTypes.func,
+  onAddCharacter: PropTypes.func,
 };
 export default Characters;
