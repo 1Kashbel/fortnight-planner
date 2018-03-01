@@ -8,15 +8,18 @@ class Fortnights extends Component {
     let fortnights = this.props.currentFortnights;
     return (
       <div className={this.props.class}>
-        {fortnights.map(f => (
-          <FortnightEntry
-            key={f.thumb}
-            name={f.name}
-            thumb={f.thumb}
-            drops={f.drops}
-            currentCharacters={this.props.currentCharacters}
-          />
-        ))}
+        <h3 style={{ marginTop: 5 }}>Fortnights</h3>
+        <div style={{ width: '30%', textAlign: 'center', margin: 'auto' }}>
+          {fortnights.map(f => (
+            <FortnightEntry
+              key={f.thumb}
+              name={f.name}
+              thumb={f.thumb}
+              drops={f.drops}
+              currentCharacters={this.props.currentCharacters}
+            />
+          ))}
+        </div>
       </div>
     );
   }

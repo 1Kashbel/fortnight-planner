@@ -95,6 +95,7 @@ class App extends Component {
           class="fortnights-block"
           currentFortnights={this.state.currentFortnights}
           currentCharacters={this.state.currentCharacters}
+          characters={this.state.characters}
         />
         <Characters
           class="characters-block"
