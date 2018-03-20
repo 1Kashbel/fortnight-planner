@@ -58,5 +58,6 @@ typings/
 .env
 
 .idea/
-public/
+public/*
+!public/index.html
 src/Data/*json
