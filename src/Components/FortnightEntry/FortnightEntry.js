@@ -4,6 +4,14 @@ import './FortnightEntry.css';
 import SmallCharacterEntry from '../SmallCharacterEntry/SmallCharacterEntry';
 class FortnightEntry extends Component {
   componentWillMount() {
+    this.updateLists();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentCharacters !== this.props.currentCharacters) {
+      this.updateLists();
+    }
+  }
+  updateLists() {
     const characters = this.props.currentCharacters;
     const drops = this.props.drops;
     this.setState({ characters, drops });
