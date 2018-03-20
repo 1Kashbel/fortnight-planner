@@ -59,4 +59,4 @@ typings/
 
 .idea/
 public/
-src/Data
+src/Data/*json
