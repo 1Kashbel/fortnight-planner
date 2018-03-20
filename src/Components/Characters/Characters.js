@@ -6,15 +6,22 @@ import 'react-select/dist/react-select.css';
 import CharacterEntry from '../CharacterEntry/CharacterEntry';
 
 class Characters extends React.Component {
-  componentWillMount() {
+  updateCharacterList() {
     let characters = this.props.characters.filter(
       char =>
         this.props.currentCharacters.indexOf(
           char.value.toString().padStart(4, '0')
         ) === -1
     );
-
     this.setState({ characters });
+  }
+  componentWillMount() {
+    this.updateCharacterList();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentCharacters !== this.props.currentCharacters) {
+      this.updateCharacterList();
+    }
   }
   render() {
     return (
