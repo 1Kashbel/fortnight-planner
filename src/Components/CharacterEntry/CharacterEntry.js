@@ -3,21 +3,19 @@ import PropTypes from 'prop-types';
 import './CharacterEntry.css';
 class CharacterEntry extends Component {
   render() {
-    const character = this.props.character;
+    const character = this.props.characters.find(
+      c => c.value.toString().padStart(4, '0') === this.props.character
+    );
     return (
       <p>
         <img
           alt={character}
           style={{ width: 30, height: 30, float: 'left' }}
-          src={`https://onepiece-treasurecruise.com/wp-content/uploads/f${character}.png`}
+          src={`https://onepiece-treasurecruise.com/wp-content/uploads/f${character.value
+            .toString()
+            .padStart(4, '0')}.png`}
         />
-        <span>
-          {
-            this.props.characters.find(
-              c => c.value.toString().padStart(4, '0') === character
-            ).name
-          }
-        </span>
+        <span>{character.name}</span>
         <span
           onClick={() => this.props.onRemoveButtonPress(this.props.character)}
           className={'remove-button'}
