@@ -49,6 +49,7 @@ class App extends Component {
     let currentCharacters = this.state.currentCharacters.slice() || [];
     currentCharacters.push(val.value);
     this.setState({ currentCharacters });
+    sessionStorage.removeItem('fetchedFortnights');
   }
 
   removeCharacter(val) {

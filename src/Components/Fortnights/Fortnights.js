@@ -42,7 +42,10 @@ class Fortnights extends Component {
     }
   };
   componentDidUpdate = (prevProps, prevState) => {
-    if (this.props.onlyAvailable !== prevProps.onlyAvailable) {
+    if (
+      this.props.onlyAvailable !== prevProps.onlyAvailable ||
+      this.props.currentCharacters !== prevProps.currentCharacters
+    ) {
       this.fetchCurrentFortnights();
     }
   };
