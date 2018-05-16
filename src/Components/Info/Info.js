@@ -4,7 +4,6 @@ import './Info.css';
 
 class Info extends React.Component {
   render() {
-    const hidden = this.props.hidden === 'yes';
     return (
       <div className={this.props.class + ' info'}>
         <p>
@@ -18,12 +17,10 @@ class Info extends React.Component {
           <input
             id="hide-fortnights"
             type="checkbox"
-            defaultChecked={hidden}
+            defaultChecked={this.props.hidden}
             onChange={this.props.onCheckboxChange}
           />
-          <label htmlFor="hide-fortnights">
-            Only show available fortnights
-          </label>
+          <label htmlFor="hide-fortnights">Only show available fortnights</label>
         </p>
       </div>
     );

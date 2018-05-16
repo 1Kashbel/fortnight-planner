@@ -10,17 +10,14 @@ const characters = require('../../Data/characters');
 
 class App extends Component {
   componentWillMount() {
-    let currentCharacters =
-      JSON.parse(localStorage.getItem('currentCharacters')) || [];
+    let currentCharacters = JSON.parse(localStorage.getItem('currentCharacters')) || [];
     let currentFortnights = [];
     let usableCharacters = characters.filter(char =>
-      fortnights.some(
-        f => f.drops.indexOf(char.value.toString().padStart(4, '0')) > -1
-      )
+      fortnights.some(f => f.drops.indexOf(char.value.toString().padStart(4, '0')) > -1)
     );
     this.setState({
-      region: localStorage.getItem('region') || 'Global',
-      hidden: localStorage.getItem('hidden'),
+      region: JSON.parse(localStorage.getItem('region')) || 'Global',
+      hidden: JSON.parse(localStorage.getItem('hidden')) || false,
       characters: usableCharacters,
       fortnights,
       currentCharacters,
@@ -35,20 +32,17 @@ class App extends Component {
   toggleRegion() {
     let region = this.state.region === 'Global' ? 'Japan' : 'Global';
     this.setState({ region: region });
-    localStorage.setItem('region', region);
+    localStorage.setItem('region', JSON.stringify(region));
   }
 
   toggleHidden() {
-    let hidden = this.state.hidden === 'yes' ? 'no' : 'yes';
-    this.setState({ hidden: hidden });
-    localStorage.setItem('hidden', hidden);
+    let hidden = !this.state.hidden;
+    this.setState({ hidden });
+    localStorage.setItem('hidden', JSON.stringify(hidden));
   }
 
   saveCharactersToStorage() {
-    localStorage.setItem(
-      'currentCharacters',
-      JSON.stringify(this.state.currentCharacters)
-    );
+    localStorage.setItem('currentCharacters', JSON.stringify(this.state.currentCharacters));
   }
 
   addCharacter(val) {
@@ -65,16 +59,12 @@ class App extends Component {
   updateFortnights() {
     let currentFortnights = this.state.fortnights
       .slice()
-      .filter(f =>
-        this.state.currentCharacters.some(c => f.drops.indexOf(c) > -1)
-      );
+      .filter(f => this.state.currentCharacters.some(c => f.drops.indexOf(c) > -1));
     this.setState({ currentFortnights });
   }
 
   componentDidUpdate(prevProps, prevState, prevContext) {
-    if (
-      prevState.currentCharacters.length !== this.state.currentCharacters.length
-    ) {
+    if (prevState.currentCharacters.length !== this.state.currentCharacters.length) {
       this.saveCharactersToStorage();
       this.updateFortnights();
     }
@@ -91,12 +81,16 @@ class App extends Component {
           region={this.state.region}
         />
         <div className="tools-block">Tools Block</div>
-        <Fortnights
-          class="fortnights-block"
-          currentFortnights={this.state.currentFortnights}
-          currentCharacters={this.state.currentCharacters}
-          characters={this.state.characters}
-        />
+        {this.state.currentFortnights.length > 0 ? (
+          <Fortnights
+            class="fortnights-block"
+            currentFortnights={this.state.currentFortnights}
+            currentCharacters={this.state.currentCharacters}
+            characters={this.state.characters}
+            onlyAvailable={this.state.hidden}
+          />
+        ) : null}
+
         <Characters
           class="characters-block"
           characters={this.state.characters}

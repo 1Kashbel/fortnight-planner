@@ -2,24 +2,57 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Fortnights.css';
 import FortnightEntry from '../FortnightEntry/FortnightEntry';
-import fetchedFortnights from '../../Utils/CurrentFortnights';
+import fetchFortnights from '../../Utils/CurrentFortnights';
 
 class Fortnights extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fortnights: [],
+    };
+  }
+
   componentDidMount = () => {
-    fetchedFortnights()
-      .then(data => {
-        this.setState({ fetchedFortnights: data });
-      })
-      .catch(err => console.log(err));
+    this.fetchCurrentFortnights();
+  };
+
+  fetchCurrentFortnights = () => {
+    let fetchedFortnights = JSON.parse(sessionStorage.getItem('fetchedFortnights'));
+    if (this.props.onlyAvailable) {
+      if (!fetchedFortnights) {
+        fetchFortnights()
+          .then(data => {
+            this.setState({ fetchedFortnights: data });
+            let fortnights = this.props.currentFortnights;
+            if (this.props.onlyAvailable) {
+              fortnights = fortnights.filter(
+                f => this.state.fetchedFortnights.indexOf(f.thumb) > -1
+              );
+            }
+            this.setState({ fortnights });
+            sessionStorage.setItem('fetchedFortnights', JSON.stringify(fortnights));
+          })
+          .catch(err => console.log(err));
+      } else {
+        this.setState({ fortnights: fetchedFortnights });
+      }
+    } else {
+      this.setState({ fortnights: this.props.currentFortnights });
+    }
+  };
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.props.onlyAvailable !== prevProps.onlyAvailable) {
+      this.fetchCurrentFortnights();
+    }
   };
 
   render() {
-    let fortnights = this.props.currentFortnights;
     return (
       <div className={this.props.class}>
         <h3 style={{ marginTop: 5 }}>Fortnights</h3>
         <div style={{ width: '30%', textAlign: 'center', margin: 'auto' }}>
-          {fortnights.map(f => (
+          {this.state.fortnights.map(f => (
             <FortnightEntry
               key={f.thumb}
               name={f.name}
