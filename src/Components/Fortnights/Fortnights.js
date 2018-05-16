@@ -41,15 +41,6 @@ class Fortnights extends Component {
       this.setState({ fortnights: this.props.currentFortnights });
     }
   };
-  componentDidUpdate = (prevProps, prevState) => {
-    if (
-      this.props.onlyAvailable !== prevProps.onlyAvailable ||
-      this.props.currentCharacters !== prevProps.currentCharacters ||
-      this.props.region !== prevProps.region
-    ) {
-      this.fetchCurrentFortnights();
-    }
-  };
 
   render() {
     return (
