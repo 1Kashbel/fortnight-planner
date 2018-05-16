@@ -1,4 +1,4 @@
-export default async function getAvailableFortnights() {
+export default async function getAvailableFortnights(region) {
   // TODO: Add Japan region
   const monthNames = [
     'January',
@@ -15,10 +15,16 @@ export default async function getAvailableFortnights() {
     'December',
   ];
 
-  const weekData = await fetch('https://optc-agenda.github.io/assets/json/weeks.json');
+  let currentRegion = region === 'Global' ? '' : 'Jap';
+  const weekData = await fetch(
+    `https://optc-agenda.github.io/assets/json/weeks${currentRegion}.json`
+  );
 
   // FIXME: Add all the translations
   const fortnightTranslations = {
+    LuffyPizza: '2087',
+    OarsHogback: '1965',
+    WandaCarrot: '1812',
     Kalifa: '0318',
     Lucci: '0322',
     Franky: '0337',

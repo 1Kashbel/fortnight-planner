@@ -21,7 +21,7 @@ class Fortnights extends Component {
     let fetchedFortnights = JSON.parse(sessionStorage.getItem('fetchedFortnights'));
     if (this.props.onlyAvailable) {
       if (!fetchedFortnights) {
-        fetchFortnights()
+        fetchFortnights(this.props.region)
           .then(data => {
             this.setState({ fetchedFortnights: data });
             let fortnights = this.props.currentFortnights;
@@ -44,7 +44,8 @@ class Fortnights extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (
       this.props.onlyAvailable !== prevProps.onlyAvailable ||
-      this.props.currentCharacters !== prevProps.currentCharacters
+      this.props.currentCharacters !== prevProps.currentCharacters ||
+      this.props.region !== prevProps.region
     ) {
       this.fetchCurrentFortnights();
     }

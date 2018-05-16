@@ -33,6 +33,7 @@ class App extends Component {
     let region = this.state.region === 'Global' ? 'Japan' : 'Global';
     this.setState({ region: region });
     localStorage.setItem('region', JSON.stringify(region));
+    sessionStorage.removeItem('fetchedFortnights');
   }
 
   toggleHidden() {
@@ -89,6 +90,7 @@ class App extends Component {
             currentCharacters={this.state.currentCharacters}
             characters={this.state.characters}
             onlyAvailable={this.state.hidden}
+            region={this.state.region}
           />
         ) : null}
 
