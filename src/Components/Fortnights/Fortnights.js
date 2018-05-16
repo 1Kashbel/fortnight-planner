@@ -2,8 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Fortnights.css';
 import FortnightEntry from '../FortnightEntry/FortnightEntry';
+import fetchedFortnights from '../../Utils/CurrentFortnights';
 
 class Fortnights extends Component {
+  componentDidMount = () => {
+    fetchedFortnights()
+      .then(data => {
+        this.setState({ fetchedFortnights: data });
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
     let fortnights = this.props.currentFortnights;
     return (
