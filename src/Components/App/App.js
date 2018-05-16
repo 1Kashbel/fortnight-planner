@@ -83,16 +83,15 @@ class App extends Component {
           region={this.state.region}
         />
         <div className="tools-block">Tools Block</div>
-        {this.state.currentFortnights.length > 0 ? (
-          <Fortnights
-            class="fortnights-block"
-            currentFortnights={this.state.currentFortnights}
-            currentCharacters={this.state.currentCharacters}
-            characters={this.state.characters}
-            onlyAvailable={this.state.hidden}
-            region={this.state.region}
-          />
-        ) : null}
+
+        <Fortnights
+          class="fortnights-block"
+          currentFortnights={this.state.currentFortnights}
+          currentCharacters={this.state.currentCharacters}
+          characters={this.state.characters}
+          onlyAvailable={this.state.hidden}
+          region={this.state.region}
+        />
 
         <Characters
           class="characters-block"
